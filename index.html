@@ -153,7 +153,7 @@ function updateCountdown() {
     const midnight = getMidnight().getTime();
     const distance = midnight - now;
 
-    if (true) {
+    if (distance <= 0) {
         const countdownContainer = document.getElementById("countdownContainer");
         const videoContainer = document.getElementById("videoContainer");
         const video = document.getElementById("celebrationVideo");
