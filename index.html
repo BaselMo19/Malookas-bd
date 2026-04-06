@@ -70,7 +70,6 @@ video {
     position: absolute;
     width: 10px;
     height: 10px;
-    background: red;
     animation: fall linear infinite;
 }
 
@@ -83,7 +82,6 @@ video {
 /* 💖 Hearts */
 .heart {
     position: absolute;
-    color: pink;
     font-size: 20px;
     animation: floatUp 4s linear infinite;
 }
@@ -104,7 +102,7 @@ video {
 <body>
 
 <div id="countdownContainer">
-    <div id="countdown">Loading...</div>
+    <div id="countdown">2:00</div>
 </div>
 
 <div id="videoContainer">
@@ -116,13 +114,7 @@ video {
 </div>
 
 <script>
-function getMidnight() {
-    const now = new Date();
-    const midnight = new Date(now);
-    midnight.setDate(now.getDate() + 1);
-    midnight.setHours(0, 0, 0, 0);
-    return midnight;
-}
+let timeLeft = 120; // ⏱️ 2 minutes in seconds
 
 function startCelebration() {
     // 🎉 Confetti
@@ -149,11 +141,7 @@ function startCelebration() {
 }
 
 function updateCountdown() {
-    const now = new Date().getTime();
-    const midnight = getMidnight().getTime();
-    const distance = midnight - now;
-
-    if (distance <= 0) {
+    if (timeLeft <= 0) {
         const countdownContainer = document.getElementById("countdownContainer");
         const videoContainer = document.getElementById("videoContainer");
         const video = document.getElementById("celebrationVideo");
@@ -165,20 +153,20 @@ function updateCountdown() {
             videoContainer.classList.add("show");
 
             video.play().catch(()=>{});
-
-            startCelebration(); // 🎉 start effects
+            startCelebration();
         }, 1000);
 
         clearInterval(timer);
         return;
     }
 
-    const hours = Math.floor(distance / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    let minutes = Math.floor(timeLeft / 60);
+    let seconds = timeLeft % 60;
 
     document.getElementById("countdown").innerHTML =
-        hours + "h " + minutes + "m " + seconds + "s";
+        `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+    timeLeft--;
 }
 
 const timer = setInterval(updateCountdown, 1000);
